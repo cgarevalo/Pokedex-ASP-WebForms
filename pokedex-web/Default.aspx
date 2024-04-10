@@ -6,7 +6,7 @@
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
 
-        <%
+        <%--<%
             foreach (Dominio.Pokemon poke in ListaPokemon)
             {
         %>
@@ -20,6 +20,23 @@
                     </div>
                 </div>
             </div>
-        <%  }%>
+        <%  }%>--%>
+
+        <asp:Repeater ID="repRepetidor" runat="server">
+            <ItemTemplate>
+                <div class="col">
+                    <div class="card">
+                        <img src="<%#Eval("UrlImagen") %>" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title"><%#Eval("Nombre") %></h5>
+                            <p class="card-text"><%#Eval("Descripcion") %></p>
+                            <a href="DetallePokemon.aspx?id=<%#Eval("Id") %>">Ver detalle</a>
+                            <asp:Button ID="btnEjemplo" CssClass="btn btn-primary" runat="server" Text="Ejemplo" CommandArgument='<%#Eval("Id") %>' CommandName="pokemonId" OnClick="btnEjemplo_Click" />
+                        </div>
+                    </div>
+                </div>
+            </ItemTemplate>
+        </asp:Repeater>
+
     </div>
 </asp:Content>
