@@ -128,6 +128,36 @@ namespace Negocio
             }
         }
 
+        public void AgregarConSP(Pokemon nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+
+                datos.SetearProcedimiento("storedAltaPokemon");
+
+                //El método SetearParametro carga los últimos 2 valores agregados a la consulta (IdTipo, IdDebilidad)
+                datos.SetearParametro("@numero", nuevo.Numero);
+                datos.SetearParametro("@nombre", nuevo.Nombre);
+                datos.SetearParametro("@desc", nuevo.Descripcion);
+                datos.SetearParametro("@img", nuevo.UrlImagen);
+                datos.SetearParametro("@idTipo", nuevo.Tipo.Id);
+                datos.SetearParametro("@idDebilidad", nuevo.Debilidad.Id);
+                //datos.SetearParametro("@idEvolucion", null);
+                datos.EjecutarAccion();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
         public void Modificar(Pokemon modificar)
         {
             AccesoDatos datos = new AccesoDatos();
