@@ -10,7 +10,7 @@ namespace Negocio
 {
     public class PokemonNegocio
     {
-        public List<Pokemon> listar()
+        public List<Pokemon> listar(string id = "")
         {
             List<Pokemon> lista = new List<Pokemon>();
             SqlConnection conexion = new SqlConnection();
@@ -21,7 +21,12 @@ namespace Negocio
             {
                 conexion.ConnectionString = "server=.\\SQLEXPRESS; database=POKEDEX_DB; integrated security=true";
                 comando.CommandType = System.Data.CommandType.Text;
-                comando.CommandText = "Select Numero, Nombre, P.Descripcion, UrlImagen, E.Descripcion Tipo, D.Descripcion Debilidad, P.IdTipo, P.IdDebilidad, P.Id From POKEMONS P, ELEMENTOS E, ELEMENTOS D Where E.Id = P.IdTipo And D.Id = P.IdDebilidad And P.Activo = 1";
+                comando.CommandText = "Select Numero, Nombre, P.Descripcion, UrlImagen, E.Descripcion Tipo, D.Descripcion Debilidad, P.IdTipo, P.IdDebilidad, P.Id From POKEMONS P, ELEMENTOS E, ELEMENTOS D Where E.Id = P.IdTipo And D.Id = P.IdDebilidad And P.Activo = 1 ";
+
+                // Si el string id viene cargado se le agraga este fragmento a la consulta, si no, no
+                if (id != "")
+                    comando.CommandText += "AND P.Id = " + id;
+
                 comando.Connection = conexion;
 
                 conexion.Open();
@@ -165,6 +170,33 @@ namespace Negocio
             try
             {
                 datos.SetearConsulta("Update POKEMONS set Numero = @numero, Nombre = @nombre, Descripcion = @desc, UrlImagen = @img, IdTipo = @idTipo, IdDebilidad = @idDebilidad Where Id = @id");
+                datos.SetearParametro("@numero", modificar.Numero);
+                datos.SetearParametro("@nombre", modificar.Nombre);
+                datos.SetearParametro("@desc", modificar.Descripcion);
+                datos.SetearParametro("@img", modificar.UrlImagen);
+                datos.SetearParametro("@idTipo", modificar.Tipo.Id);
+                datos.SetearParametro("@idDebilidad", modificar.Debilidad.Id);
+                datos.SetearParametro("@id", modificar.Id);
+
+                datos.EjecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
+        public void ModificarConSP(Pokemon modificar)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.SetearProcedimiento("storedModificarPokemon");
                 datos.SetearParametro("@numero", modificar.Numero);
                 datos.SetearParametro("@nombre", modificar.Nombre);
                 datos.SetearParametro("@desc", modificar.Descripcion);

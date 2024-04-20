@@ -20,6 +20,8 @@ namespace pokedex_web
             txtId.Enabled = false;
             try
             {
+                // Configuración inicial de la pantalla
+
                 if (!IsPostBack)
                 {
                     NegocioElemento negocio = new NegocioElemento();
@@ -34,6 +36,30 @@ namespace pokedex_web
                     ddlDebilidad.DataValueField = "Id";
                     ddlDebilidad.DataTextField = "Descripcion";
                     ddlDebilidad.DataBind();
+                }
+
+                // Configuración si estamos modificando
+                string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
+                if (id != "" && !IsPostBack)
+                {
+                    PokemonNegocio negocio = new PokemonNegocio();
+                    //List<Pokemon> lista = negocio.listar(id);
+                    //Pokemon seleccionado = lista[0];
+                    Pokemon seleccionado = (negocio.listar(id))[0]; //Se resumen las dos líneas anteriores en una sola.
+
+                    // Pre cargar todos los campos
+                    txtId.Text = id;
+                    txtNombre.Text = seleccionado.Nombre;
+                    txtNumero.Text = seleccionado.Numero.ToString();
+                    txtDescripcion.Text = seleccionado.Descripcion;
+                    txtUrlImagen.Text = seleccionado.UrlImagen;
+
+                    ddlTipo.SelectedValue = seleccionado.Tipo.Id.ToString();
+                    ddlDebilidad.SelectedValue = seleccionado.Debilidad.Id.ToString();
+
+                    // Carga la imágen
+                    imgPokemon.ImageUrl = txtUrlImagen.Text;
+
                 }
             }
             catch (Exception ex)
@@ -66,7 +92,16 @@ namespace pokedex_web
                 nuevoPoke.Debilidad = new Elemento();
                 nuevoPoke.Debilidad.Id = int.Parse(ddlDebilidad.SelectedValue);
 
-                negocio.AgregarConSP(nuevoPoke);
+                if (Request.QueryString["id"] != null)
+                {
+                    nuevoPoke.Id = int.Parse(txtId.Text);
+                    negocio.Modificar(nuevoPoke);
+                }
+                else
+                {
+                    negocio.AgregarConSP(nuevoPoke);
+                }
+                
                 Response.Redirect("PokemonLista.aspx", false);
             }
             catch (Exception ex)
@@ -80,5 +115,6 @@ namespace pokedex_web
         {
             imgPokemon.ImageUrl = txtUrlImagen.Text;
         }
+
     }
 }
