@@ -21,7 +21,7 @@ namespace Negocio
             {
                 conexion.ConnectionString = "server=.\\SQLEXPRESS; database=POKEDEX_DB; integrated security=true";
                 comando.CommandType = System.Data.CommandType.Text;
-                comando.CommandText = "Select Numero, Nombre, P.Descripcion, UrlImagen, E.Descripcion Tipo, D.Descripcion Debilidad, P.IdTipo, P.IdDebilidad, P.Id From POKEMONS P, ELEMENTOS E, ELEMENTOS D Where E.Id = P.IdTipo And D.Id = P.IdDebilidad And P.Activo = 1 ";
+                comando.CommandText = "Select Numero, Nombre, P.Descripcion, UrlImagen, E.Descripcion Tipo, D.Descripcion Debilidad, P.IdTipo, P.IdDebilidad, P.Id, P.Activo From POKEMONS P, ELEMENTOS E, ELEMENTOS D Where E.Id = P.IdTipo And D.Id = P.IdDebilidad ";
 
                 // Si el string id viene cargado se le agraga este fragmento a la consulta, si no, no
                 if (id != "")
@@ -49,6 +49,8 @@ namespace Negocio
                     aux.Debilidad = new Elemento();
                     aux.Debilidad.Id = (int)lector["IdDebilidad"];
                     aux.Debilidad.Descripcion = (string)lector["Debilidad"];
+
+                    aux.Activo = (bool)lector["Activo"];
 
                     lista.Add(aux);
                 }
@@ -236,13 +238,15 @@ namespace Negocio
             }
         }
 
-        public void EliminarLogico(int id)
+        // Modificado para que también pueda reactivar un pokemon
+        public void EliminarLogico(int id, bool activo = false)
         {
             try
             {
                 AccesoDatos datos = new AccesoDatos();
-                datos.SetearConsulta("Update POKEMONS Set Activo = 0 Where id = @id");
+                datos.SetearConsulta("Update POKEMONS Set Activo = @activo Where id = @id");
                 datos.SetearParametro("@id", id);
+                datos.SetearParametro("@activo", activo);
                 datos.EjecutarAccion();
             }
             catch (Exception ex)
