@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 
-namespace Negocio
+namespace Datos
 {
-    internal class AccesoDatos
+    public class AccesoDatos
     {
         private SqlConnection conexion;
         private SqlCommand comando;
@@ -62,6 +62,20 @@ namespace Negocio
             catch (Exception ex)
             {
 
+                throw ex;
+            }
+        }
+
+        public int EjecutarAccionScalar()
+        {
+            comando.Connection = conexion;
+            try
+            {
+                conexion.Open();
+                return (int)comando.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }

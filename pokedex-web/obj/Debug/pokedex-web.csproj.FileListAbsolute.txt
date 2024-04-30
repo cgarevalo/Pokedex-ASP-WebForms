@@ -124,3 +124,5 @@ A:\Archivos\Cristian\Curso de maxi programa\Curso de C# nivel 3\Actividades\Ejem
 A:\Archivos\Cristian\Curso de maxi programa\Curso de C# nivel 3\Actividades\Ejempl ASP WebForms\pokedex-web\obj\Debug\pokedex-web.csproj.CopyComplete
 A:\Archivos\Cristian\Curso de maxi programa\Curso de C# nivel 3\Actividades\Ejempl ASP WebForms\pokedex-web\obj\Debug\pokedex-web.dll
 A:\Archivos\Cristian\Curso de maxi programa\Curso de C# nivel 3\Actividades\Ejempl ASP WebForms\pokedex-web\obj\Debug\pokedex-web.pdb
+A:\Archivos\Cristian\Curso de maxi programa\Curso de C# nivel 3\Actividades\Ejempl ASP WebForms\pokedex-web\bin\Datos.dll
+A:\Archivos\Cristian\Curso de maxi programa\Curso de C# nivel 3\Actividades\Ejempl ASP WebForms\pokedex-web\bin\Datos.pdb

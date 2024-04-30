@@ -34,6 +34,12 @@
                         </li>
                     </ul>
                 </div>
+
+                <div class="d-flex">
+                    <a href="#" class="btn btn-success me-3">Login</a>
+                    <a href="Registro.aspx" class="btn btn-outline-success me-3">Registrarse</a>
+                    <asp:Image runat="server" ID="imgPerfil" style="height:40px; width:40px; border-radius:50% " />
+                </div>
             </div>
         </nav>
         <div class="container">
