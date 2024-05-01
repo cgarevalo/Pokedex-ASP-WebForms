@@ -30,5 +30,37 @@ namespace Negocio
 				datos.CerrarConexion();
 			}
         }
+
+		public bool Login(Trainee trainee)
+		{
+			AccesoDatos datos = new AccesoDatos();
+
+			try
+			{
+				datos.SetearConsulta("SELECT id, email, pass, admin FROM USERS WHERE email = @email AND pass = @pass");
+
+				datos.SetearParametro("@email", trainee.Email);
+				datos.SetearParametro("@pass", trainee.Pass);
+				datos.EjecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+					trainee.Id = (int)datos.Lector["id"];
+					trainee.Admin = (bool)datos.Lector["admin"];
+
+					return true;
+                }
+
+				return false;
+            }
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			finally
+			{
+				datos.CerrarConexion();
+			}
+		}
     }
 }

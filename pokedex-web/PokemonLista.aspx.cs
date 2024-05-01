@@ -15,6 +15,12 @@ namespace pokedex_web
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!(Seguridad.EsAdmin(Session["trainee"])))
+            {
+                Session.Add("error", "Se requieren permisos de administrador para estár en la página");
+                Response.Redirect("Error.aspx");
+            }
+
             FiltroAvanzado = chkAvanzado.Checked;
 
             if (!IsPostBack)
