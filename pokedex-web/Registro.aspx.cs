@@ -29,10 +29,11 @@ namespace pokedex_web
             {
                 user.Email = email;
                 user.Pass = pass;
-                int id = traineeNegocio.InsertarNuevo(user);
+                user.Id = traineeNegocio.InsertarNuevo(user);
+                Session.Add("trainee", user);
 
-                //emailService.ArmarCorreo(user.Email, "Bienvenido entrenador", "Hola te damos la bienvenida a la aplicación.");
-                //emailService.EnviarEmail();
+                emailService.ArmarCorreo(user.Email, "Bienvenido entrenador", "Hola te damos la bienvenida a la aplicación.");
+                emailService.EnviarEmail();
 
                 Response.Redirect("Default.aspx", false);
             }

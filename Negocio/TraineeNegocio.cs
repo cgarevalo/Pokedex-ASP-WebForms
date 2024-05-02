@@ -37,7 +37,7 @@ namespace Negocio
 
 			try
 			{
-				datos.SetearConsulta("SELECT id, email, pass, admin FROM USERS WHERE email = @email AND pass = @pass");
+				datos.SetearConsulta("SELECT id, email, pass, admin, imagenPerfil FROM USERS WHERE email = @email AND pass = @pass");
 
 				datos.SetearParametro("@email", trainee.Email);
 				datos.SetearParametro("@pass", trainee.Pass);
@@ -47,6 +47,9 @@ namespace Negocio
                 {
 					trainee.Id = (int)datos.Lector["id"];
 					trainee.Admin = (bool)datos.Lector["admin"];
+					// Verifica si es imagenPerfil es null
+					if (!(datos.Lector["imagenPerfil"] is DBNull))
+						trainee.ImagenPerfil = (string)datos.Lector["imagenPerfil"];
 
 					return true;
                 }
@@ -62,5 +65,27 @@ namespace Negocio
 				datos.CerrarConexion();
 			}
 		}
+
+        public void Actualizar(Trainee user)
+        {
+			AccesoDatos datos = new AccesoDatos();
+
+			try
+			{
+				datos.SetearConsulta("UPDATE USERS SET imagenPerfil = @imagen WHERE id = @id");
+
+				datos.SetearParametro("@imagen", user.ImagenPerfil);
+				datos.SetearParametro("@id", user.Id);
+				datos.EjecutarAccion();
+			}
+			catch (Exception ex)
+			{
+				throw ex; 
+			}
+			finally
+			{
+				datos.CerrarConexion();
+			}
+        }
     }
 }

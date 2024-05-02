@@ -36,13 +36,13 @@ namespace pokedex_web
                 }
                 else
                 {
-                    Session.Add("error: ", "user o pass incorrentos");
-                    Response.Redirect("Error.aspx");
+                    Session.Add("error", "user o pass incorrentos");
+                    Response.Redirect("Error.aspx", false);
                 }
             }
             catch (Exception ex)
             {
-                Session.Add("error: ", ex.ToString());
+                Session.Add("error", ex.ToString());
             }
         }
     }
