@@ -42,6 +42,15 @@ namespace pokedex_web
         protected global::System.Web.UI.WebControls.Button btnSalir;
 
         /// <summary>
+        /// Control lbluser.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbluser;
+
+        /// <summary>
         /// Control imgPerfil.
         /// </summary>
         /// <remarks>

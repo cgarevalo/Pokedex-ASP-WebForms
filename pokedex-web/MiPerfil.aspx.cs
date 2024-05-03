@@ -13,8 +13,28 @@ namespace pokedex_web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            try
+            {
+                if (!IsPostBack)
+                {
+                    if (Seguridad.SesionActiva(Session["trainee"]))
+                    {
+                        Trainee userConectado = (Trainee)Session["trainee"];
 
-            
+                        txtEmail.Text = userConectado.Email;
+                        txtEmail.ReadOnly = true;
+                        txtNombre.Text = userConectado.Nombre;
+                        txtApellido.Text = userConectado.Apellido;
+                        txtFechaNacimiento.Text = userConectado.FechaNacimiento.ToString("yyyy-MM-dd");
+                        if (!string.IsNullOrEmpty(userConectado.ImagenPerfil))
+                            imgNuevoPerfil.ImageUrl = "~/Images/" + userConectado.ImagenPerfil;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex.ToString());
+            }
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
@@ -22,16 +42,23 @@ namespace pokedex_web
             TraineeNegocio negocio = new TraineeNegocio();
 
             try
-            {
-                // Escribir img
-
-                // Obtiene la ruta de la carpeta
-                string ruta = Server.MapPath("./Images/");
+            {   
                 Trainee user = (Trainee)Session["trainee"];
-                // Guarda la imagen seleccionada por el usuario en la ruta de la carpeta
-                txtImagen.PostedFile.SaveAs(ruta + "perfil-" + user.Id + ".jpg");
 
-                user.ImagenPerfil = "perfil-" + user.Id + ".jpg";
+                // Escribe la imágen si se seleccionó una
+                if (txtImagen.PostedFile.FileName != "")
+                {
+                    // Obtiene la ruta de la carpeta
+                    string ruta = Server.MapPath("./Images/");
+                    txtImagen.PostedFile.SaveAs(ruta + "perfil-" + user.Id + ".jpg");
+                    user.ImagenPerfil = "perfil-" + user.Id + ".jpg";
+                }
+
+                user.Nombre = txtNombre.Text;
+                user.Apellido = txtApellido.Text;
+                user.FechaNacimiento = DateTime.Parse(txtFechaNacimiento.Text);
+
+                // Actualiza los datos
                 negocio.Actualizar(user);
 
                 // Leer img

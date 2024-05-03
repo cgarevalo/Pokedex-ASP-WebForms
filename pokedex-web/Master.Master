@@ -50,8 +50,9 @@
                 <%else
                     { %>
                 <asp:Button ID="btnSalir" CssClass="btn btn-outline-primary me-3" OnClick="btnSalir_Click" runat="server" Text="Salir" />
+                <asp:Label ID="lbluser" runat="server" CssClass="text-light m-auto me-2"  Text=""></asp:Label>
                 <%  } %>
-
+              
                 <asp:Image runat="server" ID="imgPerfil" Style="height: 40px; width: 40px; border-radius: 50%; background-color: gray" CssClass="me-3" />
             </div>
         </nav>

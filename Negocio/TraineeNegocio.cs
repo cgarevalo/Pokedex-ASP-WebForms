@@ -37,7 +37,7 @@ namespace Negocio
 
 			try
 			{
-				datos.SetearConsulta("SELECT id, email, pass, admin, imagenPerfil FROM USERS WHERE email = @email AND pass = @pass");
+				datos.SetearConsulta("SELECT id, email, pass, fechaNacimiento, admin, imagenPerfil, nombre, apellido FROM USERS WHERE email = @email AND pass = @pass");
 
 				datos.SetearParametro("@email", trainee.Email);
 				datos.SetearParametro("@pass", trainee.Pass);
@@ -50,6 +50,12 @@ namespace Negocio
 					// Verifica si es imagenPerfil es null
 					if (!(datos.Lector["imagenPerfil"] is DBNull))
 						trainee.ImagenPerfil = (string)datos.Lector["imagenPerfil"];
+					if (!(datos.Lector["nombre"] is DBNull))
+						trainee.Nombre = (string)datos.Lector["nombre"];
+					if (!(datos.Lector["apellido"] is DBNull))
+						trainee.Apellido = (string)datos.Lector["apellido"];
+					if (!(datos.Lector["fechaNacimiento"] is DBNull))
+						trainee.FechaNacimiento = (DateTime)datos.Lector["fechaNacimiento"];
 
 					return true;
                 }
@@ -72,10 +78,14 @@ namespace Negocio
 
 			try
 			{
-				datos.SetearConsulta("UPDATE USERS SET imagenPerfil = @imagen WHERE id = @id");
+				datos.SetearConsulta("UPDATE USERS SET nombre = @nombre, apellido = @apellido, imagenPerfil = @imagen, fechaNacimiento = @fecha WHERE id = @id");
 
-				datos.SetearParametro("@imagen", user.ImagenPerfil);
 				datos.SetearParametro("@id", user.Id);
+				datos.SetearParametro("@nombre", user.Nombre);
+				datos.SetearParametro("@apellido", user.Apellido);
+				// Una validación ternaria
+				datos.SetearParametro("@imagen", user.ImagenPerfil != null ? user.ImagenPerfil : "");
+				datos.SetearParametro("@fecha", user.FechaNacimiento);
 				datos.EjecutarAccion();
 			}
 			catch (Exception ex)
