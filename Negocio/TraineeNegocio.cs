@@ -84,7 +84,8 @@ namespace Negocio
 				datos.SetearParametro("@nombre", user.Nombre);
 				datos.SetearParametro("@apellido", user.Apellido);
 				// Una validación ternaria
-				datos.SetearParametro("@imagen", user.ImagenPerfil != null ? user.ImagenPerfil : "");
+				//datos.SetearParametro("@imagen", user.ImagenPerfil != null ? user.ImagenPerfil : "");
+				datos.SetearParametro("@imagen", user.ImagenPerfil ?? (object)DBNull.Value);
 				datos.SetearParametro("@fecha", user.FechaNacimiento);
 				datos.EjecutarAccion();
 			}
